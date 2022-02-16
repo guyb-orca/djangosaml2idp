@@ -184,6 +184,7 @@ SAML_IDP_CONFIG = {
                 'single_sign_on_service': [
                     ('http://localhost:9000/idp/sso/post/', saml2.BINDING_HTTP_POST),
                     ('http://localhost:9000/idp/sso/redirect/', saml2.BINDING_HTTP_REDIRECT),
+                    ('http://18.156.199.166:9000/idp/sso/redirect/', saml2.BINDING_HTTP_REDIRECT),
                 ],
                 "single_logout_service": [
                     ("http://localhost:9000/idp/slo/post/", saml2.BINDING_HTTP_POST),

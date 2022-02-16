@@ -244,7 +244,7 @@ class LoginProcessView(LoginRequiredMixin, IdPHandlerViewMixin, View):
                 binding,
                 relay_state=request.session.get('RelayState'),
                 sigalg=request.session.get('SigAlg'),
-                signature=request.session.get('SigAlg'),
+                signature=request.session.get('Signature'),
             )
 
             # check SAML request signature
