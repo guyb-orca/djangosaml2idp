@@ -48,6 +48,8 @@ def store_params_in_session(request: HttpRequest) -> None:
         passed_data = request.GET
         binding = BINDING_HTTP_REDIRECT
 
+    logger.info(f"{passed_data=}")
+
     try:
         saml_request = passed_data['SAMLRequest']
     except (KeyError, MultiValueDictKeyError) as e:
@@ -70,8 +72,8 @@ def sso_entry(request: HttpRequest, *args, **kwargs) -> HttpResponse:
     except ValidationError as e:
         return error_cbv.handle_error(request, e, status_code=400)
 
-    logger.debug("SSO requested to IDP with binding {}".format(request.session['Binding']))
-    logger.debug("--- SAML request [\n{}] ---".format(repr_saml(request.session['SAMLRequest'], b64=True)))
+    logger.info("SSO requested to IDP with binding {}".format(request.session['Binding']))
+    logger.info("--- SAML request [\n{}] ---".format(repr_saml(request.session['SAMLRequest'], b64=True)))
 
     return HttpResponseRedirect(reverse('djangosaml2idp:saml_login_process'))
 
