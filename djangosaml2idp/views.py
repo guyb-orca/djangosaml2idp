@@ -58,6 +58,10 @@ def store_params_in_session(request: HttpRequest) -> None:
     request.session['Binding'] = binding
     request.session['SAMLRequest'] = saml_request
     request.session['RelayState'] = passed_data.get('RelayState', '')
+    if 'Signature' in passed_data:
+        request.session['Signature'] = passed_data['Signature']
+    if 'SigAlg' in passed_data:
+        request.session['SigAlg'] = passed_data['SigAlg']
 
 
 @never_cache
@@ -235,7 +239,13 @@ class LoginProcessView(LoginRequiredMixin, IdPHandlerViewMixin, View):
             idp_server = IDP.load()
 
             # Parse incoming request
-            req_info = idp_server.parse_authn_request(request.session['SAMLRequest'], binding)
+            req_info = idp_server.parse_authn_request(
+                request.session['SAMLRequest'],
+                binding,
+                relay_state=request.session.get('RelayState'),
+                sigalg=request.session.get('SigAlg'),
+                signature=request.session.get('SigAlg'),
+            )
 
             # check SAML request signature
             try:
